@@ -1,0 +1,11 @@
+[package]
+name = 'just-memo'
+version = '1.0.0'
+
+[dependencies.AptosFramework]
+git = 'https://github.com/aptos-labs/aptos-core.git'
+rev = 'main'
+subdir = 'aptos-move/framework/aptos-framework'
+
+[addresses]
+just_memo = "0xaaff464474b94bdb37e4d14fb2bd9ed8eadc9e34d3b74dd95f67f42be8467f5a"

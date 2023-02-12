@@ -1,0 +1,58 @@
+
+[env]
+JUST_MEMO = "0xaaff464474b94bdb37e4d14fb2bd9ed8eadc9e34d3b74dd95f67f42be8467f5a"
+
+[tasks."switch:move"]
+script = '''
+aptos init --profile testnet-owner \
+  --rest-url https://testnet.aptoslabs.com
+'''
+
+[tasks."publish:move"]
+script = '''
+aptos move publish
+'''
+
+[tasks."create_counter"]
+script = '''
+COIN_X=0x1::aptos_coin::AptosCoin
+
+aptos move run \
+  --url https://mainnet.aptoslabs.com \
+  --function-id ${JUST_MEMO}::counter::create_counter \
+  --type-args ${COIN_X} \
+'''
+
+[tasks."push_counter"]
+# --private-key ${ADMIN_PRIVATE} \
+script = '''
+COIN_X=0x1::aptos_coin::AptosCoin
+
+aptos move run \
+  --url https://mainnet.aptoslabs.com \
+  --function-id ${JUST_MEMO}::counter::push_counter \
+  --type-args ${COIN_X} \
+  --args u64:114514
+'''
+
+[tasks."create_price"]
+script = '''
+COIN_X=0x1::aptos_coin::AptosCoin
+
+aptos move run \
+  --url https://mainnet.aptoslabs.com \
+  --function-id ${JUST_MEMO}::counter::create_price \
+  --type-args ${COIN_X} \
+'''
+
+[tasks."push_price"]
+# --private-key ${ADMIN_PRIVATE} \
+script = '''
+COIN_X=0x1::aptos_coin::AptosCoin
+
+aptos move run \
+  --url https://mainnet.aptoslabs.com \
+  --function-id ${JUST_MEMO}::counter::push_price \
+  --type-args ${COIN_X} \
+  --args u64:114514 u8:2
+'''
