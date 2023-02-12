@@ -1,0 +1,75 @@
+[env]
+PACKAGE_ID = "0x517cb36ea548fe92ca043e40af8ab9121ceb6842"
+
+[tasks."build:move"]
+script = '''
+sui move build
+'''
+
+[tasks."publish:move"]
+dependencies = [
+  "build:move",
+]
+script = '''
+sui client publish --gas-budget 30000 --json
+'''
+
+[tasks."switch:testnet"]
+script = '''
+sui client new-env --alias testnet --rpc https://fullnode.testnet.sui.io:443
+sui client switch --env testnet
+'''
+
+[tasks."install:cli"]
+script = '''
+cargo install --locked --git https://github.com/MystenLabs/sui.git --branch testnet sui
+'''
+
+[tasks."create_counter"]
+script = '''
+sui client call \
+  --package ${PACKAGE_ID} \
+  --module counter \
+  --function create_counter \
+  --type-args 0x2::sui::SUI \
+  --gas-budget 1000 \
+'''
+
+[tasks."push_counter"]
+script = '''
+sui client call \
+  --package ${PACKAGE_ID} \
+  --module counter \
+  --function push_counter \
+  --type-args 0x2::sui::SUI \
+  --args \
+    0x139c8b1aaa914844ed1a4aedde3a8b8008780bbd \
+    114514 \
+  --gas-budget 1000 \
+'''
+
+[tasks."create_price"]
+script = '''
+sui client call \
+  --package ${PACKAGE_ID} \
+  --module counter \
+  --function create_price \
+  --type-args 0x2::sui::SUI \
+  --gas-budget 1000 \
+  --json
+'''
+
+[tasks."push_price"]
+script = '''
+sui client call \
+  --package ${PACKAGE_ID} \
+  --module counter \
+  --function push_price \
+  --type-args 0x2::sui::SUI \
+  --args \
+    0x7937cd03a319c652b5464e54feeadb1e8de89247 \
+    114514 \
+    2 \
+  --gas-budget 1000 \
+  # --json
+'''
